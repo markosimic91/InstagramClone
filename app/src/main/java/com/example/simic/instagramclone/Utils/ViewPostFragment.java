@@ -152,7 +152,7 @@ public class ViewPostFragment extends Fragment {
 
                             String[] splitUsers = mUsers.toString().split(",");
 
-                            if(mUsers.toString().contains(mUserAccountSettings.getUser_name())){
+                            if(mUsers.toString().contains(mUserAccountSettings.getUser_name() + ",")){
                                 mLikedByCurrentUser = true;
                             }else{
                                 mLikedByCurrentUser = false;
@@ -352,6 +352,7 @@ public class ViewPostFragment extends Fragment {
         mUserName.setText(mUserAccountSettings.getUser_name());
 
         mLikes.setText(mLikesString);
+        mCaption.setText(mPhoto.getCaption());
 
         if (mLikedByCurrentUser){
             mHeartWhite.setVisibility(View.GONE);
