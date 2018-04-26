@@ -1,5 +1,6 @@
 package com.example.simic.instagramclone.Utils;
 
+import android.content.Context;
 import android.net.ParseException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,6 +49,12 @@ public class ViewPostFragment extends Fragment {
 
     private static final String TAG = "ViewPostFragment";
 
+    public interface  OnCommentThreadSelectedListener{
+        void onCommentThreadSelectedListener(Photo photo);
+    }
+
+    OnCommentThreadSelectedListener mOnCommentThreadSelectedListener;
+
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -70,6 +77,8 @@ public class ViewPostFragment extends Fragment {
     @BindView(R.id.image_heart_red) ImageView mHeartRed;
     @BindView(R.id.image_heart) ImageView mHeartWhite;
     @BindView(R.id.profile_photo) ImageView mProfileImage;
+
+    @BindView(R.id.speech_bubble) ImageView mComments;
     //endregion
 
 
@@ -116,7 +125,19 @@ public class ViewPostFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        
+        try{
 
+            mOnCommentThreadSelectedListener = (OnCommentThreadSelectedListener) getActivity();
+
+            
+        }catch (ClassCastException e){
+            Log.e(TAG, "onAttach: ClassCastException " + e.getMessage() );
+        }
+    }
 
     //region GetLikeString
     private void getLikeString(){
@@ -353,6 +374,22 @@ public class ViewPostFragment extends Fragment {
 
         mLikes.setText(mLikesString);
         mCaption.setText(mPhoto.getCaption());
+
+        mBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        mComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mOnCommentThreadSelectedListener.onCommentThreadSelectedListener(mPhoto);
+
+            }
+        });
 
         if (mLikedByCurrentUser){
             mHeartWhite.setVisibility(View.GONE);

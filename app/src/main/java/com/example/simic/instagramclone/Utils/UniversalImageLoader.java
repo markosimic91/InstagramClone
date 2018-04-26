@@ -36,7 +36,7 @@ public class UniversalImageLoader  {
                 .showImageOnLoading(defaultImage)
                 .showImageForEmptyUri(defaultImage)
                 .showImageOnFail(defaultImage)
-                .considerExifParams(false)
+                .considerExifParams(true)
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)

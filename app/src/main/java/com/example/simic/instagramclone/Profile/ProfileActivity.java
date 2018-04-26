@@ -3,20 +3,43 @@ package com.example.simic.instagramclone.Profile;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.simic.instagramclone.Models.Photo;
 import com.example.simic.instagramclone.R;
+import com.example.simic.instagramclone.Utils.ViewCommentsFragment;
 import com.example.simic.instagramclone.Utils.ViewPostFragment;
 
 /**
  * Created by Simic on 13.3.2018..
  */
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnGridImageSelectedListener{
-    
+public class ProfileActivity extends AppCompatActivity implements
+        ProfileFragment.OnGridImageSelectedListener,
+        ViewPostFragment.OnCommentThreadSelectedListener{
     private static final String TAG = "ProfileActivity";
+
+
+    @Override
+    public void onCommentThreadSelectedListener(Photo photo) {
+        Log.d(TAG, "onCommentThreadSelectedListener: selected a comment thread ");
+
+        ViewCommentsFragment fragment = new ViewCommentsFragment();
+
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo),photo);
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,fragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragment));
+        transaction.commit();
+
+    }
+    
+
 
     @Override
     public void onGridImageSelected(Photo photo, int activityNumber) {
@@ -71,5 +94,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         transaction.commit();
 
     }
+
 
 }
